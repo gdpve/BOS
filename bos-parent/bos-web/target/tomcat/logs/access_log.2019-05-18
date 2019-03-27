@@ -1,0 +1,16 @@
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:12 +0800] "GET /bos HTTP/1.1" 302 - http-bio-8888-exec-1 0
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:12 +0800] "GET /bos/ HTTP/1.1" 302 - http-bio-8888-exec-2 87
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:14 +0800] "GET /bos/login.jsp;jsessionid=2CBF92FEF1B54479BCE03F46E52BD118 HTTP/1.1" 200 3936 http-bio-8888-exec-3 1461
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:14 +0800] "GET /bos/css/style_grey.css HTTP/1.1" 200 7293 http-bio-8888-exec-6 37
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:14 +0800] "GET /bos/css/style.css HTTP/1.1" 200 23492 http-bio-8888-exec-5 33
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:14 +0800] "GET /bos/js/jquery-1.8.3.js HTTP/1.1" 200 267739 http-bio-8888-exec-4 86
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:14 +0800] "GET /bos/images/bg_grey.png HTTP/1.1" 200 5357 http-bio-8888-exec-7 46
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:14 +0800] "GET /bos/images/bg_login.jpg HTTP/1.1" 200 531270 http-bio-8888-exec-9 67
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:14 +0800] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8888-exec-9 0
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:14 +0800] "GET /bos/validatecode.jsp HTTP/1.1" 200 1910 http-bio-8888-exec-8 469
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:24 +0800] "POST /bos/userAction_login.action HTTP/1.1" 200 3936 http-bio-8888-exec-9 1597
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:24 +0800] "GET /bos/validatecode.jsp HTTP/1.1" 200 1933 http-bio-8888-exec-9 29
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:34 +0800] "POST /bos/userAction_login.action HTTP/1.1" 200 3936 http-bio-8888-exec-9 256
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:34 +0800] "GET /bos/validatecode.jsp HTTP/1.1" 200 1959 http-bio-8888-exec-9 10
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:51 +0800] "POST /bos/userAction_login.action HTTP/1.1" 200 3936 http-bio-8888-exec-9 34
+0:0:0:0:0:0:0:1 - - [18/May/2019:17:28:51 +0800] "GET /bos/validatecode.jsp HTTP/1.1" 200 1892 http-bio-8888-exec-9 27

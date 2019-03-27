@@ -1,0 +1,637 @@
+
+
+
+
+小结：
+action 的抽象和dao层的抽象  以及什么时候需要些get、set方法 （前天传入的参数只用（登录或是注册的时候只用set方法会不会有影响  ），模型对象  sercive对象   还有pojo中）
+前天的页面参数提交给封装给pojo靠的是set方法  而后台传给前台是使用get方法
+
+制表符：每个字表符多少位，  不足的用空格填充
+
+StringUtils.join(headByString);字符串数组转成字符串
+
+substring（a,b）从索引为a 到索引为b（不包括b）  一般都是值索引号 都是从零开始。
+String a = "Hello Word";
+System.out.println(a.indexOf("o"));
+System.out.println(a.lastIndexOf("o"));
+输出的结果第一条是4，是o第一次出现的下标，第二条是7，是o最后一次出现的下标。
+（空格也算一个字符，中间写了多少个空格都用一个空格表示  前后空格也算一个字符）
+
+String a = "    Hello Word   ";
+System.out.println(a.trim());  表示删除前后的空格
+a.length().表示的是字符的个数（中文，数字 字母标点符号都算一个字符）
+
+StringUtils.isNotBlank(q) 判断是否为null或是空字符 
+
+
+使用easyui-datagrid  分页查询的时候需要注意的几个问题：
+1.传入参数是 page(当前页) 和 row（每页多少条）   
+2.返回类型的集合是rows
+3.列名一定要和row对象中的字段名一致
+
+
+左右选择的select
+	<!-- 关联客户窗口 -->
+	<div modal=true class="easyui-window" title="关联客户窗口" id="customerWindow" collapsible="false" closed="true" minimizable="false" maximizable="false" style="top:20px;left:200px;width: 400px;height: 300px;">
+		<div style="overflow:auto;padding:5px;" border="false">
+			<form id="customerForm" action="${pageContext.request.contextPath }/decidedzoneAction_assigncustomerstodecidedzone.action" method="post">
+				<table class="table-edit" width="80%" align="center">
+					<tr class="title">
+						<td colspan="3">关联客户</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="hidden" name="id" id="customerDecidedZoneId" />
+							<select id="noassociationSelect" multiple="multiple" size="10"></select>
+						</td>
+						<td>
+							<input type="button" value="》》" id="toRight"><br/>
+							<input type="button" value="《《" id="toLeft">
+							<script type="text/javascript">
+								$(function(){
+									//为左右移动按钮绑定事件
+									$("#toRight").click(function(){
+										$("#associationSelect").append($("#noassociationSelect option:selected"));
+									});
+									$("#toLeft").click(function(){
+										$("#noassociationSelect").append($("#associationSelect option:selected"));
+									});
+									
+									//为关联客户按钮绑定事件
+									$("#associationBtn").click(function(){
+										var rows = $("#grid").datagrid("getSelections");
+										var id = rows[0].id;
+										//为隐藏域（存放定区id）赋值
+										$("input[name=id]").val(id);
+										//提交表单之前，需要将右侧下拉框中所有的选项选中,为option添加一个selected属性
+										$("#associationSelect option").attr("selected","selected");
+										//选中的项目就会提交上去									
+										$("#customerForm").submit();
+									});
+								});
+							</script>
+						</td>
+						<td>
+							<select id="associationSelect" name="customerIds" multiple="multiple" size="10">
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3"><a id="associationBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">关联客户</a> </td>
+					</tr>
+				</table>
+			</form>
+		</div>
+
+
+使用powerdesginer转成的sql语句
+1. 设置外键是外键值没有设置（使用了引用表） 
+2. 还有设置的外键可能会有冲突（换一个就可以了）
+3.注意多对多的中间表要设置一个主键的ID（）
+4，转成sql语句之后如何最后还是看下语句在导入到数据库中
+
+
+
+重置eclipse 页面
+1.eclipse ->windows ->Perspactive -> Reset perspactive 
+
+当你觉得报的错有点莫名其妙的时候   清缓存  重编译  重启项目 可能有用
+
+对md5加密的几点认识：
+1.同样的密码加密之后的字符串是一样的
+2.是不支持逆向的  但是有些网站可以查到逆向的密码
+3.insert into t_user (username,password) values(wanwan, md5('123456')); 数据库支持md5的加密
+
+
+快速找到jar包中类的方法：选择项目栏右上角的一个切换符号 选择哪个类就会定位到哪个类中
+
+
+一条记录的json   :  var data={"name":"小双","age":28,"addr":"扬州"},          取值：data.name
+n条记录的json:      var data=[
+ 		                {"name":"小双","age":28,"addr":"扬州"},
+ 		          	{"name":"建宁","age":18,"addr":"紫禁"},
+ 		          	{"name":"阿珂","age":10,"addr":"山西"},       取值： data[0].name
+ 		              ]
+记录中的字段是集合的json:
+                       var data = {
+			"key1":"value1",
+	                "key2":{"firstname":"张","lastname":"三丰","age":100},  字段是一个对象
+			"key3":[
+ 		                {"name":"小双","age":28,"addr":"扬州"},
+ 		          	{"name":"建宁","age":18,"addr":"紫禁"},
+ 		          	{"name":"阿珂","age":10,"addr":"山西"},
+ 		                ]
+	                    };   字段是一个对象的集合
+     
+                       取值：  data.key1
+                               data.key2.firstname
+                               data.key3[0].firstname
+  
+显示在ztree中的数据一般要是这样类型json的数据  （里面的键名不能改成别的）
+[
+		{ "id":"11", "pId":"0", "name":"基础数据"},
+		{ "id":"112", "pId":"11", "name":"取派员设置",  "page":"page_base_staff.action"},
+		{ "id":"113", "pId":"11", "name":"区域设置","page":"page_base_region.action"},
+		{ "id":"114", "pId":"11", "name":"管理分区", "page":"page_base_subarea.action"},
+		{ "id":"115", "pId":"11", "name":"管理定区/调度排班","page":"page_base_decidedzone.action"},
+		{ "id":"12", "pId":"0", "name":"受理"},
+		{ "id":"121", "pId":"12", "name":"业务受理" ,"page":"page_qupai_noticebill_add.action"},
+		{ "id":"122", "pId":"12", "name":"工作单快速录入" ,"page":"page_qupai_quickworkorder.action"},
+		{ "id":"124", "pId":"12", "name":"工作单导入" ,"page":"page_qupai_workorderimport.action"},
+		{ "id":"13", "pId":"0", "name":"调度"},
+		{ "id":"131", "pId":"13", "name":"查台转单","page":""},
+		{ "id":"132", "pId":"13", "name":"人工调度","page":"page_qupai_diaodu.action"}
+]
+      
+
+var data = [{
+			"id":"value1",  
+	                "name":"vaule2"
+                        "page":"vaule2"
+			"chirlen":[
+ 		                {"id":"小双","age":28,"addr":"扬州"},
+ 		          	{"id":"建宁","age":18,"addr":"紫禁"},
+ 		          	{"name":"阿珂","age":10,"addr":"山西"},
+ 		                ]
+	        };   字段是一个对象的集合
+              {
+			"id":"value1",
+	                "name":"vaule2"
+                        "page":"vaule2"
+			"chirlen":[
+ 		                {"name":"小双","age":28,"addr":"扬州"},
+ 		          	{"name":"建宁","age":18,"addr":"紫禁"},
+ 		          	{"name":"阿珂","age":10,"addr":"山西"},
+ 		                ]
+	        };   字段是一个对象的集合
+        ]
+
+显示在datagrid 中的json  
+     1.和普通使用一样  注意字段表示每页显示条数rows    和当前页数的字段page不能变
+
+
+highChart 需要的数据形式：
+     Data:[
+ [,]
+ [,]
+ [,]
+ [,]
+]
+
+
+
+
+
+
+
+为什么这样封装结果集
+List<Customer> list = jdbcTemplate.query(sql, new RowMapper<Customer>(){
+			public Customer mapRow(ResultSet rs, int arg1) throws SQLException {
+				int id = rs.getInt("id");//根据字段名称从结果集中获取对应的值
+				String name = rs.getString("name");
+				String station = rs.getString("station");
+				String telephone = rs.getString("telephone");
+				String address = rs.getString("address");
+				String decidedzone_id = rs.getString("decidedzone_id");
+				return new Customer(id, name, station, telephone, address, decidedzone_id);
+			}
+		},telephone);
+
+
+
+
+
+
+
+
+hibernate 的几个参数  
+懒加载（关联的内容使用的时候才加载）默认是使用懒加载（在只查询单表就可以满足要求,再查询关联信息）  
+常见问题：懒加载引起的死循环问题？？？？
+
+
+查询方式（使用子查询还是关联查询）
+
+关系维护（一对多：多表维护，也可以两者都维护，多对多：其中一个表来维护） inverse  默认是由自己来维护（false）  主表需要设置inverse（true） 
+  
+
+关系维护和级联是 在有外键的地方设置   级联一般不设置（没有提交性能，容易出错）
+
+
+
+
+
+
+注意：columns:[[  
+
+
+权限表：其实就是各个大小功能模块
+   id                   权限ID
+   name                 权限名
+   code                 权限编号
+   description          描述
+   page                  地址
+   generatemenu         
+   zindex                
+   pid                   父ID     外键 自己与自己关联   设计pojo的时候多了一个parentfunction 也有一个childrenFunction集合代替pid
+
+
+角色权限表：  中间表可以设置主键 如果需要设置主键的话就需要加入一个字段作为主键
+   ole_id               角色外键ID
+   function_id          权限外键ID
+   primary key (role_id, function_id) 
+
+导入到数据库中的数据还可以撤销吗？？ 事务只对于DMl语句 也对DDL，DCL也起作用
+
+
+
+	
+
+
+无论是分页还是ztree得到的json数据没有必要的字段一定要排除吗   不排除会怎么样？？？？
+答：可以不排除 
+
+	
+
+         <bean id="myJob" class="com.itheima.jobs.MailJob">
+		<property name="username" value="itcast_server@126.com"/>    
+		<property name="password" value="147963qP"/>
+		<property name="smtpServer" value="smtp.126.com"/>  
+                 发件人的邮箱服务器  发件人是腾讯的就是用腾讯的服务器  如果是网易的就使用网易的邮箱发
+	</bean>
+
+
+如果查询的返回的是某些字段如何进行封装：
+
+ 后台处理：
+    /**S
+	 * 查询区域分区分布图数据
+	 */
+	public String findSubareasGroupByProvince(){
+		List<Object> list = subareaService.findSubareasGroupByProvince();//查询到几个字段 打印出来是什么数据
+		this.java2Json(list, new String[]{});
+		return NONE;
+	}
+
+
+
+
+
+总结：
+1.Tomcat运行之前先要打包  测试中有问题也会影响项目的启动 ，如果启动出了问题要么配置文件的原因 还有可能是test原因
+
+
+2。判断maven中是不是使用的eclipse中的Tomcat 可以看下目录中有没有maven中启动的项目
+
+
+
+3.datgrid进行分页的时候 前台传过来的才是 row和page是固定的必须这样命名  还有page中的list集合名也必须命名为rows才会被
+映射过去
+
+
+4.jsonConfig.setExcludes(exclueds);
+String json = JSONArray.fromObject(obej,jsonConfig).toString();  这里排除的除了object对象的字段，也可以是obej的中的集合对象的字段
+
+5.字符什么时候需要\   字符串中带\的都需要这样转（目录）
+转义字符   在字符串中 \n \ 等会被识别成转义字符 所以需要 \\
+转义字符以反斜线"\"开头，后跟一个或几个字符。转义字符具有特定的含义，不同于字符原有的意义，故称“转义”字符。   http地址 /     本地地址  \
+
+6.js 中返回上一页 history.go(-1)返回     <INPUT class="button_ok" type="button" onclick="history.go(-1)" value="返回"/>
+
+7.history.go(-1)和history.back(-1)在功能上都是返回当前页的上一级页面，但history.go(-1)返回后，原页面数据会丢失，而history.back(-1)则会将原页面的数据保存，所以在使用过程中，history.back(-1)会比较多一点！
+
+8.封装dao 或是action的是代表传入的对象需要写上这段代码
+//代表的是某个实体的类型
+	private Class<T> entityClass;
+
+//在父类（BaseDaoImpl）的构造方法中动态获得entityClass       T  只表示对象  object所有的类型
+	public BaseDaoImpl() {
+		ParameterizedType superclass = (ParameterizedType) this.getClass().getGenericSuperclass();//得到父类对象  
+		//获得父类上声明的泛型数组
+		Type[] actualTypeArguments = superclass.getActualTypeArguments();//得到父类的泛型数组
+		entityClass = (Class<T>) actualTypeArguments[0];//把某个对象强转成泛型
+	}
+
+DecidedzoneDaoImpl extends BaseDaoImpl<Decidedzone>继承Basedao的类
+
+在action中：
+//在构造方法中动态获取实体类型，通过反射创建model对象  
+	public BaseAction() {
+		ParameterizedType genericSuperclass = (ParameterizedType) this.getClass().getGenericSuperclass();
+		//获得BaseAction上声明的泛型数组
+		Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();
+		Class<T> entityClass = (Class<T>) actualTypeArguments[0];  //对象的字节码对象
+		
+		//通过反射创建对象
+		try {
+			model = entityClass.newInstance();}
+                catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+
+9.子类中可以调用父类的成员变量  userAction 中可以调用BaseAction中的model
+
+10.
+Tomcat如何添加虚拟目录   ：双击Tomcat 可以添加Tomcat的虚拟目录
+String path= this.getServletContext().getRealPath("upload");//Tomcat项目中的某个目录 我们希望的传入Tomcat主机中某个目录中
+
+//将上传文件保存到指定位置
+photo.renameTo(new File("E:/upload/haha.jpg"));  E:/upload/haha.jpg这个就是虚拟目录
+
+
+
+11.public User user 创建引用  还是没有实例化（实例化堆中需要分配内存）
+User user= new  User（）; 创建实例
+
+12.
+
+json 对象和json对象的字符串写法有什么区别
+js 中json 的写法
+ var json={"name":"wanwan";"age"=12}
+
+js中json字符串的写法：
+   var json="{\"name\":\"wanwan\",\"age\":18}"
+	   alert(json)
+
+   var realname="gdp" 
+	    var json="{\"name\":"+realname+",\"age\":18}"
+	     alert(json)
+
+后台传入json对象，也可以传入json类型的字符串     dataType : 'json/text',
+
+13.js中每条语句可以不以；结束 写了也没有关系
+
+14.
+
+集合一定要写泛型吗  没有写什么类型集合默认是object   
+ArrayList<T> list= new ArrayList<T> 
+Map<String,Obejct>=new Map<String,Object>; 定义集合中聚合可以装什么类型的对象
+
+
+idField : 'id',//这个不一定需要设置,用于表示一个唯一 的标识
+
+有关字符串前后空格和中间空格的问题？在前后的中如何解决？？？
+StringUtils.isNotBlank(checkcode)  前台输入的值不为null，  同时不是空格
+
+$("input[name=customerId]").val(customerId);  el 表达式通过name属性的值得到标签
+<td><input type="text" class="easyui-validatebox"  name="customerId" ></td>
+
+
+web 层中设置service  是设置接口  service一定要实现接口 
+同理service中设置dao也是一样
+
+action 中要获得session 要先获得request  
+一般通过ServletActionContext.getRequest().getSession();
+response也是通过ServletActionContext获得
+
+  ServletActionContext.getResponse().setContentType("text/json;charset=utf-8");
+	   //传什么类型的数据到response缓冲区中
+	   ServletActionContext.getResponse().getWriter().print(json);
+	   return NONE;//父类中有这样的常量直接使用！
+
+
+
+	//使用json-lib将PageBean对象转为json，通过输出流写回页面中
+		//JSONObject---将单一对象转为json
+		//JSONArray----将数组或者集合对象转为json
+JsonConfig jsonConfig= new JsonConfig();//这个不用导包？？？ jsonConfig.setExcludes(new String[]//设置值把对象中的某些字段json {"currentPage","detachedCriteria","pageSize"});String json = JSONObject.fromObject(pageBean,jsonConfig).toString();
+
+
+	<!-- 需要进行权限控制的页面访问 -->
+		<action name="page_*_*">  <!-- web-inf里面的网页是受保护的只有通过action的跳转可以访问到 -->
+			<result type="dispatcher">/WEB-INF/pages/{1}/{2}.jsp</result>
+		</action>
+
+
+创建maven项目环境的步骤
+先建立项目 parent(填写poml.xml)  web（添加web.xml文件） service dao utils domain
+给各层项目之间建立依赖（这个不用到本地仓库中找因为他们是同一个项目中所以可以这样（没有打包到本地仓库依然可以导入对应的包））
+写配置文件  建包
+写代码
+
+
+注意如果parent中加入子项目的时候都会自动引入关联 如果子项目删除了，这个关联也应该删掉。不然会打包不了（编译出问题）
+
+
+
+无论使用什么样的插件都是先要导包再使用
+插件的主要作用就是加上 
+1.对标签添加了一些固定的样式我们只需要调用就可以了（用特定的class名  ）
+2.添加了一些固定的方法   在写jquery语句的时候使用   
+3.给标签添加特殊的属性
+
+一般写easyui的属性值的时候要以easyui为前缀 中间-隔开 后面表示根据不同的功能命名 
+(layout,tabs,accordion)  
+data—options其中包含了很多easyUI的属性 属性名：‘属性值’ 
+（region:'west/east/center/north/south' iconcls:'icon-cut/edit' closable='true/false'   
+fit:'true/false'  content）
+closable 与fit 默认 都是false
+
+
+  样式用class属性  js用id属性 （用#加ID名）  后台传值用name属性
+   easyui在jq中的应用：
+
+ 模板：  $("与tabs有关控件").tabs("与tabs有关控件的方法","系统管理");
+   $("#mytabs").tabs("select","系统管理");  
+   $("#mytabs").tabs("exists","系统管理");  //title名  记住是exists
+   $("#mytabs").tabs("add",{                //json数据
+									title:'系统管理',
+									iconCls:'icon- 
+edit',
+									closable:true,
+									content:'<iframe  
+frameborder="0" height="100%" width="100%" src="https://www.baidu.com"></iframe>'
+								});
+
+	
+
+有些插件里面的变量使用的时候记住一般第一个单词首字母小写，第二个单词首字母大写
+
+//这些类的主要作用就是抽取出了一些常用的方法（内容一样，但是传入的数据的类型不一样），这样父类就需要用到泛型  子类继承的时候需要写入具体的对象名
+
+@Resource  
+	public void setMySessionFactory(SessionFactory sessionFactory)
+  	{
+		 super.setSessionFactory(sessionFactory);
+	}
+
+//  在父类中  当不知道什么类型的对象的时候用T表示      不知道什么类型的基本类型数据的时候
+Serializable表示    Class<T>字节码类型的  用object太广了 
+//	类似的还有：	？ 表示不确定的java类型。 
+//		T  表示java类型。 
+//		K V 分别代表java键值中的Key Value。 
+//		E 代表Element。
+
+快捷方式：
+选中要移动的代码后，按Tab键右移，按Shift+Tab键左移。
+
+
+
+扩展BaseDao 
+//总结：
+//先获得工厂  工厂的作用就是里面存了很多的session
+		//在hibernate中session的作用就是用来获得执行平台
+//		执行平台中需要放入SQL语句和参数
+/*@Override //和写原生的SQL语句一样    这样写的优势在与看可以通过一个方法把所有有关更新的操作都做了  这样抽取才有意义
+public void executeUpdate(String queryName, Object... objects) {
+	//queryName表示sql语句的路径    Object... objects表示路径
+	// TODO Auto-generated method stub
+	Session session= this.getSessionFactory().getCurrentSession();
+	Query query= session.getNamedQuery(queryName);//把SQl语句放入执行平台
+	
+	int i=0;
+	for (Object object : objects) {
+		
+		query.setParameter(i++,object);//索引从1开始
+		
+	}
+	query.executeUpdate();
+
+}*/
+
+
+User.xml 中：
+    <query name="user.editpassword"><!-- 用语句一定要用大写 ，变量（表名，字段名除外）  不然会报错  写出SQL语句  hibernate中-->
+       UPDATE User SET password = ? WHERE id = ?
+    </query>
+</hibernate-mapping>
+
+
+
+
+有关注解
+applicationContext.xml 配置注解
+	
+	<!-- 组件扫描 -->
+	<context:component-scan base-package="com.itheima.bos"/>
+	
+	<!-- 支持spring注解 -->
+	<context:annotation-config/>
+
+有了上面两个注解才可以注解才会被解析
+
+!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<tx:annotation-driven/>
+
+
+使用注解：@Transactional
+
+
+无论是使用注解还是用配置
+Spring配置文件中一定要配置数据源(dataSource)  session工厂(sessionFactory)  还有事务管理对象(transactionManager)
+
+
+
+action中   
+@Controller创建对象(没写对象名字就默认使用是类名的首字母小写)
+@Scope("prototype")
+
+Service中
+@Service
+dao层中
+@Repository
+
+获取对象
+@Autowired注解是按类型装配依赖对象，默认情况下它要求依赖对象必须存在，如果允许null值，可以设置它required属性为false。
+@Resource注解和@Autowired一样，也可以标注在字段或属性的setter方法上，但它默认按名称装配。名称可以通过@Resource的name属性指定，如果没有指定name属性，当注解标注在字段上，即默认取字段的名称 寻找依赖对象，当注解标注在属性的setter方法上，即默认取属性名作为bean名称寻找依赖对象。
+
+@Resources按名字，是ＪＤＫ的，@Autowired按类型，是Ｓｐｒｉｎｇ的。
+
+注意：1.@Autowired   @Resource 即可以在字段上 也可以在set方法上 
+     2. @Resource  都没有指定name属性，所以找不到然后就按照原始类型String去查找，结果一下找到了两个，所以就报错
+     3.使用Resource的时候 是找bean中name还是ID？？？
+总结： 
+
+1.当字段或是属性加上这个注解的时候就说明对象被实例化了 需要吗set方法吗？
+2.如果是配置的话，要写出字段同时也要一定要加set方法才能完成注入
+3.Spring整合Struts是把struts.xml 中的类的创建交给Spring Struts只负责跳转 ，后台结果的处理（Struts.xml中的class属性名必须和创建的对象名一样）
+
+4.hibernate和Spring的整合就是把hibernate.xml的配置整合到Spring配置中
+把dao层必须继承一个HibernateDaoSupport （整合dao 层的工具不用就使用后缀名为Support的类） 
+通过这个类的getHibernateTemplate()获得具有session对象的执行平台
+
+//通过Invocation对象获得访问的proxy
+		ActionProxy proxy = invocation.getProxy();//获得访问的proxy
+		//通过代理对象获得访问路径
+		String actionName = proxy.getActionName();
+		String namespace = proxy.getNamespace();
+		String url = namespace + actionName;//获得访问的路径
+		System.out.println(url);
+
+/*ServletActionContext.getResponse().getWriter().print(f);//写到response缓冲区中被前台接受
+return NONE //NONE表示不跳到任何的action 一般和前面一句话一起用
+一般会用到这些配置
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:applicationContext.xml")
+public class HibernateTest {
+	@Resource(name="sessionFactory")
+	private SessionFactory sf ;
+搭建maven项目的步骤：
+1.建立多层是一个项目 
+2.在parent项目中配置好pom.xml配置好依赖关系和插件的版本。修改web层的错误 
+4.写配置文件 struts.xml appliactionContext.xml 和web.xml 
+5.数据库表的创建 及其domain中的映射文件  
+6.建包  
+7.写抽取类dao层和web层
+javascrip代码在body中还是在head中有什么区别
+：
+1，在head中时，所代表的functions只加载而不执行，执行是在某一事件触发后才开始。
+  2，在body中时，直接加载并执行
+（通常都是写在head里的。
+写在body里面的一半是页面加载的时候需要运行的js。）】、
+
+
+空指针异常（以后遇到在做实际的总结）
+1字符串变量未初始化； private String name;   ？？？？
+2接口类型的对象没有用具体的类初始化，比如： 
+List it；会报错 
+List it = new ArrayList()；则不会报错了 
+3.代码段4： 
+public static void main(String args[]){ 
+       Person p=null; 
+       p.setName("张三")； 
+       System.out.println(p.getName()); 
+} 
+分析：声明一个Person对象，并打印出该对象的中的Name名字。 
+说明：这个时候你的p就出现空指针异常，因为你只是声明了这个Person类型的对象并没有创建对象， 
+所以它的堆里面没有地址引用，切忌你要用对象掉用方法的时候一定要创建对象。（集合数组）
+
+注意：1.判断是否相等的时候 ：常这样写If ("root".equals(userName))  不使用If 
+(userName.equals("root")) 2.切忌你要用对象掉用方法的时候一定要创建对象。赋值来的对象算不
+算创建算是创建了 （而且一般在java中的try外面使用对象=null ，或是直接接受传过来的对象） 
+
+action中的模型驱动  一定要new ！！！
+
+构造方法：
+1.其实每个子类构造方法的第一条语句，都是隐含地调用super()，如果父类没有这种形式的构造函数，那么在编译的时候就会报错。
+2.如果父类只有有参构造也可以在子类的构造方法中加入super（int s string b）
+3.子类的构造方法中一定要加入父类的构造（只有这样在子类实例化的时候父类也会被实例化），没有写默认继承无参数构造（但是父类写了有参构造的时候就不会默认生成无参构造）
+
+
+
+子类的成员变量.方法不用声明可以直接使用(为public或是protect)
+public String add(){
+		staffService.save(model); //子类的成员变量不用声明可以直接使用
+		return LIST;
+	}
+this.java2Json(pageBean, new String[]{"decidedzones","currentPage","detachedCriteria","pageSize"});
+
+ 
+
+
+
+      
+
+
+
+
+
+
+
+

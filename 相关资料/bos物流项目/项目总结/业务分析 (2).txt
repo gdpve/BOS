@@ -1,0 +1,168 @@
+bos业务分析
+
+基础设置：
+
+表与表之间的关系：
+一个取派员负责多个定区   定区有收派员的外键
+一个定区有好多个分区     分区有定区和区域的外键
+一个区域也有好多个分区     分区有区域的外键
+
+区域：南昌青山湖     分区：某某小区   某某路多少号      定区：几个区域 南京东路加上海北路
+  
+取派员：   
+
+取派员ID  取派员的姓名   取派员电话    是否有pda??  是否删除标记（做删除操作）  station（所属单位）   standard（收派标准）   
+
+业务有：
+1.增删改  
+2.分页查 
+
+
+区域表：（都是表示具体地方区域的字段 具体使用看情况） 青山湖区
+区域id   省  市  区域  postcode编号  shortcode简单编号  citycode城市编码    分区集合
+
+业务：
+1.导入区域数据
+2.增删改查
+3.条件查询区域
+
+
+分区表：(小区)
+分区ID  定区ID（外键）  区域ID（外键）  addresskey关键字    startrum起始号  endnum终止号   single单双号   position位置
+
+
+
+业务：
+添加分区（先获得下拉框中的数据中的数据 模糊查询）
+导出分区数据
+
+
+
+
+定区表:（集合了多个小区）
+定区ID：取派员对象 定区名字
+
+业务：（需要调用crm服务）
+添加定区（取派员，分区数据先要获得）
+关联客户
+双击定区显示分区和关联的客户
+
+
+
+用户表：（登录时）（操作人员的基本信息）
+用户ID  用户名  用户密码  用户工资  用户生日  用户性别  用户状态  用户地址  用户电话 用户标记
+
+
+
+crm系统中 
+客户表：  一个定区有多个客户  （客户的一些基本信息  定区外键）
+客户ID  客户姓名  客户单位  客户电话   客户地址  定区ID
+
+
+
+
+
+
+业务单处理：
+一个用户可以受理多个业务通知单
+一个取派员可以被分配多个通知单和处理多个工单
+一个业务通知单对应工单（工单可能会变化 新 追 改 消）
+
+
+
+业务通知单：（客户 商品的一些信息）                  和客户表有关联但是没有设置外键关系（信息或是字段之间有交集）
+   id                  
+   staff_id           
+   customer_id          客户ID
+   customer_name        客户姓名
+   delegater            删除标识
+   telephone            电话 
+   pickaddress          在哪取件
+   arrivecity           到达那个城市
+   product               产品
+   pickdate             收件日期
+   num                   取件数量
+   weight                取件重量
+   volume                体积
+   remark                备注
+   ordertype             订单类型（根据商品来分）
+   user_id                受理人
+
+
+
+工单（工单的一些基本信息  取派员外键  通知单外键）
+   id                   
+   noticebill_id        通知单的ID
+   type                 工单类型
+   pickstate            取件日期
+   buildtime             建单时间
+   attachbilltimes       追单次数
+   remark                备注
+   staff_id              取派员ID
+
+
+工作单（寄件人，收件人，以及商品的一些信息)
+   id                  
+   arrivecity           到达城市
+   product              商品
+   num                  数量
+   weight               重量
+   floadreqr            
+   prodtimelimit        商品期限
+   prodtype             商品类型
+   sendername           寄件人
+   senderphone          寄件人电话
+   senderaddr           寄件人地址
+   receivername          收件人
+   receiverphone        收件人电话
+   receiveraddr         收件人地址
+   feeitemnum           
+   actlweit             
+   vol                  
+   managerCheck        
+   updatetime           更新时间
+
+业务：
+根据电话回显客户信息
+点击保存的时候  建立通知单和工单 
+工作单的快速录入(datagrid)
+
+
+
+权限表：其实就是各个大小功能模块       字段与字段之间有关系的  就可以使用这种内部关联
+   id                   权限ID
+   name                 权限名
+   code                 权限编号
+   description          描述
+   page                  地址
+   generatemenu         是否生成从菜单
+   zindex                优先级ID
+   pid                   父ID     外键 自己与自己关联？？？？？
+
+
+角色权限表：
+   of_id                主键id 
+   ole_id               角色外键ID
+   function_id          权限外键ID
+   
+
+
+
+角色表：
+   id                   角色ID
+   name                 角色名
+   code                 角色编号
+   description          角色描述
+
+
+
+
+角色用户表：
+   ur_id                 主键ID
+   user_id               用户外键ID
+   role_id               角色外键ID
+
+   
+
+
+用户表（和上面的用户一样）
